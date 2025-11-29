@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ofertas na Mão — Ofertas e Cupons</title>
+  <meta name="description" content="Ofertas selecionadas de Shopee, Mercado Livre, Magazine Luiza e muito mais. Descontos exclusivos e recomendações testadas." />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .brand-orange { background: linear-gradient(90deg,#ff7a00,#ff8f2a); }
+    .card-shadow { box-shadow: 0 10px 30px rgba(8,15,30,0.08); }
+  </style>
+</head>
+<body class="antialiased text-slate-800 bg-slate-50">
+
+  <!-- HEADER -->
+  <header class="bg-white border-b">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <!-- Substitua o src pelo caminho do seu logo -->
+        <img src="https://via.placeholder.com/64x64.png?text=Logo" alt="Ofertas na Mão" class="w-14 h-14 rounded-md object-cover">
+        <div>
+          <h1 class="text-xl font-bold">Ofertas na Mão</h1>
+          <p class="text-xs text-slate-500">Produtos selecionados de Shopee, Mercado Livre, Magazine Luiza e mais</p>
+        </div>
+      </div>
+
+      <div class="flex-1 max-w-xl">
+        <label class="relative block">
+          <input id="search" oninput="filterProducts()" class="w-full pl-4 pr-12 py-2 border rounded-lg" placeholder="Buscar produto, marca ou loja (ex: smartphone, fone, Shopee)">
+          <button class="absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1 text-sm bg-amber-500 text-white rounded">Buscar</button>
+        </label>
+      </div>
+
+      <nav class="hidden md:flex gap-4 items-center text-sm">
+        <a href="#produtos" class="hover:underline">Produtos</a>
+        <a href="#cupons" class="hover:underline">Cupons</a>
+        <a href="#contato" class="px-4 py-2 bg-slate-800 text-white rounded">Contato / WhatsApp</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="max-w-6xl mx-auto px-6 py-10 grid md:grid-cols-2 gap-8 items-center">
+    <div>
+      <h2 class="text-4xl font-extrabold">As melhores ofertas, direto na sua mão</h2>
+      <p class="mt-4 text-lg text-slate-600">Selecionamos produtos com desconto de Shopee, Mercado Livre, Magazine Luiza e outras lojas. Encontre o melhor preço, cupom e link direto para compra.</p>
+
+      <div class="mt-6 flex gap-3">
+        <a href="#produtos" class="px-6 py-3 bg-amber-500 text-white rounded-md font-semibold">Ver ofertas</a>
+        <a href="#form" class="px-6 py-3 border rounded-md">Receber cupons</a>
+      </div>
+
+      <p class="mt-4 text-sm text-slate-500">Divulgação: Eu recebo comissão pelas compras feitas via meus links — isso não aumenta o seu preço.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl card-shadow">
+      <img id="heroImg" src="https://via.placeholder.com/600x360.png?text=Oferta+Do+Dia" alt="Oferta do dia" class="rounded-lg w-full h-44 object-cover">
+      <div class="mt-4 flex items-center justify-between">
+        <div>
+          <h3 class="font-semibold">Oferta do dia</h3>
+          <p class="text-sm text-slate-500">Produto com cupom exclusivo por tempo limitado.</p>
+        </div>
+        <a id="heroBuy" href="#" target="_blank" rel="nofollow noopener" class="px-4 py-2 bg-emerald-500 text-white rounded">Comprar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLES: FILTROS -->
+  <section class="max-w-6xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row items-center gap-4 justify-between">
+      <div class="flex gap-3 items-center flex-wrap">
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" class="filter" onchange="filterProducts()" value="Shopee"> Shopee
+        </label>
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" class="filter" onchange="filterProducts()" value="MercadoLivre"> Mercado Livre
+        </label>
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" class="filter" onchange="filterProducts()" value="MagazineLuiza"> Magazine Luiza
+        </label>
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" class="filter" onchange="filterProducts()" value="Outros"> Outros
+        </label>
+      </div>
+
+      <div class="flex gap-3 items-center">
+        <select id="sort" onchange="sortProducts()" class="border rounded px-3 py-2 text-sm">
+          <option value="featured">Mais relevantes</option>
+          <option value="price-asc">Preço: menor → maior</option>
+          <option value="price-desc">Preço: maior → menor</option>
+        </select>
+        <button onclick="clearFilters()" class="text-sm text-slate-600 underline">Limpar filtros</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRID DE PRODUTOS -->
+  <section id="produtos" class="max-w-6xl mx-auto px-6 py-10">
+    <h3 class="text-2xl font-bold">Produtos em destaque</h3>
+    <div id="grid" class="mt-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+      <!-- Produto - EXEMPLO (clona este bloco para adicionar mais produtos) -->
+      <article class="product card-shadow bg-white p-4 rounded-lg" data-store="Shopee" data-price="199.90" data-title="Fone Bluetooth X-Plus">
+        <img src="https://via.placeholder.com/360x240.png?text=Fone+X" alt="Fone Bluetooth" class="w-full h-40 object-cover rounded">
+        <h4 class="mt-3 font-semibold">Fone Bluetooth X-Plus</h4>
+        <p class="text-sm text-slate-500">Conexão estável, bateria longa.</p>
+        <div class="mt-3 flex items-center justify-between">
+          <div>
+            <div class="text-lg font-bold">R$ 199,90</div>
+            <div class="text-xs text-amber-500">-15% (Cupom exclusivo)</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <!-- SUBSTITUIR URL PELO LINK DE AFILIADO DA LOJA -->
+            <a href="#" class="buy inline-block px-3 py-2 bg-amber-500 text-white rounded text-sm" target="_blank" rel="nofollow noopener">Comprar</a>
+            <button class="detail px-3 py-2 border rounded text-sm" onclick="openModal(this)">Ver</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Produto - Mercado Livre -->
+      <article class="product card-shadow bg-white p-4 rounded-lg" data-store="MercadoLivre" data-price="399.00" data-title="Smartphone Z Pro">
+        <img src="https://via.placeholder.com/360x240.png?text=Smartphone+Z" alt="Smartphone Z" class="w-full h-40 object-cover rounded">
+        <h4 class="mt-3 font-semibold">Smartphone Z Pro</h4>
+        <p class="text-sm text-slate-500">Câmera 108MP, 128GB.</p>
+        <div class="mt-3 flex items-center justify-between">
+          <div>
+            <div class="text-lg font-bold">R$ 399,00</div>
+            <div class="text-xs text-slate-500">Frete grátis</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <a href="#" class="buy inline-block px-3 py-2 bg-amber-500 text-white rounded text-sm" target="_blank" rel="nofollow noopener">Comprar</a>
+            <button class="detail px-3 py-2 border rounded text-sm" onclick="openModal(this)">Ver</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Produto - Magazine Luiza -->
+      <article class="product card-shadow bg-white p-4 rounded-lg" data-store="MagazineLuiza" data-price="129.90" data-title="Aspirador Portátil">
+        <img src="https://via.placeholder.com/360x240.png?text=Aspirador" alt="Aspirador" class="w-full h-40 object-cover rounded">
+        <h4 class="mt-3 font-semibold">Aspirador Portátil</h4>
+        <p class="text-sm text-slate-500">Compacto, ideal para carro.</p>
+        <div class="mt-3 flex items-center justify-between">
+          <div>
+            <div class="text-lg font-bold">R$ 129,90</div>
+            <div class="text-xs text-amber-500">Cupom: OFERTAS10</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <a href="#" class="buy inline-block px-3 py-2 bg-amber-500 text-white rounded text-sm" target="_blank" rel="nofollow noopener">Comprar</a>
+            <button class="detail px-3 py-2 border rounded text-sm" onclick="openModal(this)">Ver</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Produto - Exemplo outros -->
+      <article class="product card-shadow bg-white p-4 rounded-lg" data-store="Outros" data-price="59.90" data-title="Capa Protetora">
+        <img src="https://via.placeholder.com/360x240.png?text=Capa+Protetora" alt="Capa Protetora" class="w-full h-40 object-cover rounded">
+        <h4 class="mt-3 font-semibold">Capa Protetora</h4>
+        <p class="text-sm text-slate-500">Silicone resistente.</p>
+        <div class="mt-3 flex items-center justify-between">
+          <div>
+            <div class="text-lg font-bold">R$ 59,90</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <a href="#" class="buy inline-block px-3 py-2 bg-amber-500 text-white rounded text-sm" target="_blank" rel="nofollow noopener">Comprar</a>
+            <button class="detail px-3 py-2 border rounded text-sm" onclick="openModal(this)">Ver</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- FIM EXEMPLOS: DUPLICA E EDITA CADA BLOCO PARA ADICIONAR MAIS PRODUTOS -->
+    </div>
+  </section>
+
+  <!-- CAPTURA / LEAD -->
+  <section id="form" class="max-w-6xl mx-auto px-6 py-8">
+    <div class="bg-white p-6 rounded-lg card-shadow grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-xl font-bold">Quer cupons e ofertas exclusivas?</h3>
+        <p class="mt-2 text-slate-600">Deixe seu e-mail e eu envio as melhores promoções direto para você.</p>
+        <form id="leadForm" class="mt-4" onsubmit="handleLead(event)">
+          <input required name="name" type="text" placeholder="Seu nome" class="w-full p-3 rounded border">
+          <input required name="email" type="email" placeholder="Seu melhor e-mail" class="w-full p-3 rounded border mt-3">
+          <div class="mt-3 flex gap-3">
+            <button type="submit" class="px-4 py-2 bg-slate-800 text-white rounded">Quero cupons</button>
+            <button type="button" onclick="openWhats()" class="px-4 py-2 border rounded">Falar no WhatsApp</button>
+          </div>
+          <p class="mt-2 text-xs text-slate-500">Não compartilho seu e-mail. Apenas ofertas relevantes.</p>
+        </form>
+      </div>
+      <div>
+        <h4 class="font-semibold">Dica do especialista</h4>
+        <ul class="mt-3 text-sm text-slate-600 space-y-2">
+          <li>✔ Compare sempre o valor final com frete.</li>
+          <li>✔ Verifique prazos e política de devolução do vendedor.</li>
+          <li>✔ Use cupons combináveis para economizar ainda mais.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ + DISCLOSURE -->
+  <section class="max-w-6xl mx-auto px-6 py-8">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-lg card-shadow">
+        <h4 class="font-semibold">Perguntas frequentes</h4>
+        <details class="mt-3 p-3 bg-slate-50 rounded"><summary class="font-medium cursor-pointer">Como funcionam os links?</summary><p class="mt-2 text-sm">Os links são de afiliado: eu recebo uma comissão se você comprar usando meu link. Isso não aumenta o preço para você.</p></details>
+        <details class="mt-3 p-3 bg-slate-50 rounded"><summary class="font-medium cursor-pointer">Posso sugerir um produto?</summary><p class="mt-2 text-sm">Claro — uso suas sugestões para avaliar e adicionar à lista.</p></details>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg card-shadow">
+        <h4 class="font-semibold">Divulgação de afiliado</h4>
+        <p class="mt-2 text-sm">Alguns links desta página são links de afiliado. Ao comprar através desses links, eu posso receber uma comissão — sem custo adicional para você. Recomendo apenas produtos que acredito oferecer um bom custo-benefício.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contato" class="bg-white border-t mt-8">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-slate-600 flex flex-col md:flex-row justify-between gap-4">
+      <div>
+        <h4 class="font-semibold">Ofertas na Mão — [Seu Nome]</h4>
+        <p>Contato: <a href="mailto:seu@email.com" class="underline">seu@email.com</a></p>
+      </div>
+      <div class="text-right">
+        <p>© <span id="year"></span> Ofertas na Mão. Política de privacidade.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL DETALHES -->
+  <div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg max-w-2xl w-full p-6 relative">
+      <button onclick="closeModal()" class="absolute right-4 top-4 text-slate-500">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Filtrar / Buscar / Ordenar
+    function filterProducts() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const checkboxes = Array.from(document.querySelectorAll('.filter:checked')).map(c => c.value);
+      const products = document.querySelectorAll('.product');
+
+      products.forEach(p => {
+        const title = p.dataset.title.toLowerCase();
+        const store = p.dataset.store;
+        const matchesQuery = !query || title.includes(query) || p.querySelector('p').innerText.toLowerCase().includes(query);
+        const matchesStore = checkboxes.length === 0 || checkboxes.includes(store);
+        p.style.display = (matchesQuery && matchesStore) ? '' : 'none';
+      });
+    }
+
+    function sortProducts() {
+      const grid = document.getElementById('grid');
+      const option = document.getElementById('sort').value;
+      const items = Array.from(grid.children);
+
+      if (option === 'price-asc') {
+        items.sort((a,b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+      } else if (option === 'price-desc') {
+        items.sort((a,b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+      } else {
+        // featured - default order (no change)
+        items.sort((a,b) => 0);
+      }
+      items.forEach(i => grid.appendChild(i));
+    }
+
+    function clearFilters() {
+      document.getElementById('search').value = '';
+      document.querySelectorAll('.filter').forEach(cb => cb.checked = false);
+      document.getElementById('sort').value = 'featured';
+      filterProducts();
+    }
+
+    // Modal com detalhes do produto
+    function openModal(btn) {
+      const article = btn.closest('.product');
+      const title = article.querySelector('h4').innerText;
+      const img = article.querySelector('img').src;
+      const price = article.dataset.price;
+      const desc = article.querySelector('p').innerText;
+      const buyUrl = article.querySelector('.buy').href;
+
+      const html = `
+        <div class="grid md:grid-cols-2 gap-4">
+          <div><img src="${img}" class="w-full h-64 object-cover rounded"></div>
+          <div>
+            <h3 class="text-xl font-bold">${title}</h3>
+            <p class="mt-2 text-slate-600">${desc}</p>
+            <p class="mt-4 text-2xl font-extrabold">R$ ${price}</p>
+            <div class="mt-4 flex gap-3">
+              <a href="${buyUrl}" target="_blank" rel="nofollow noopener" class="px-4 py-2 bg-amber-500 text-white rounded">Comprar agora</a>
+              <button onclick="closeModal()" class="px-4 py-2 border rounded">Fechar</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalContent').innerHTML = html;
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal').classList.add('flex');
+    }
+
+    function closeModal(){
+      document.getElementById('modal').classList.add('hidden');
+      document.getElementById('modal').classList.remove('flex');
+    }
+
+    // Lead form (substituir com integração real)
+    function handleLead(e){
+      e.preventDefault();
+      const name = e.target.name.value;
+      const email = e.target.email.value;
+      // Aqui integra com Mailchimp, ConvertKit ou sua API
+      alert(`Obrigado ${name}! Em breve enviaremos cupons para ${email} (substituir alerta por integração real).`);
+      e.target.reset();
+    }
+
+    function openWhats(){
+      // Substituir número pelo seu WhatsApp com formato internacional (ex: 5511999999999)
+      window.location.href = 'https://wa.me/5511999999999?text=Ol%C3%A1%20quero%20consultar%20uma%20oferta';
+    }
+
+    // Dica: Previna cliques vazios em "Comprar" (coloque links reais)
+    document.querySelectorAll('.buy').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (btn.getAttribute('href') === '#' || !btn.getAttribute('href')) {
+          e.preventDefault();
+          alert('Substitua este link pelo seu link de afiliado da loja (Shopee, Mercado Livre, Magazine Luiza, etc).');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
